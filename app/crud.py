@@ -41,3 +41,9 @@ def update_book(category: str, db: Session, request: schemas.BookUpdate):
     db.commit()
     db.refresh(book)
     return book
+
+def delete_book(ISBN, db: Session):
+    book = db.query(models.Book).filter(models.Book.isbn == ISBN).delete(synchronize_session=False)
+    
+    db.commit()
+    return book

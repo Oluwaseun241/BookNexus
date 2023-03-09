@@ -40,3 +40,10 @@ async def create_book(request: schemas.BookCreate, db: Session = Depends(get_db)
 async def update_book(category: str, request: schemas.BookUpdate, db: Session = Depends(get_db)):
     book = crud.update_book(category, db, request=request)
     return book
+
+@app.delete("/book/{ISBN}")
+async def delete_book(ISBN: str, db: Session = Depends(get_db)):
+    book = crud.delete_book(ISBN, db)
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return {"detail": f"book with isbn{ISBN} is sucessful deleted"}

@@ -7,6 +7,7 @@ from typing import Optional
 
 class Book(BaseModel):
     book_id: Optional[str] = None
+    ISBN: int
     title: str
     description: str
     category: str
@@ -20,6 +21,7 @@ class Book(BaseModel):
     
 
 class BookCreate(BaseModel):
+    ISBN: int
     title: str
     description: str
     category: str
