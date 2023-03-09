@@ -12,7 +12,7 @@ class Book(Base):
 
     __tablename__ = 'books'
 
-    id = UUID(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     description = Column(String)
-    amount = Column(Decimal)
+    amount = Column(Integer)
