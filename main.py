@@ -29,6 +29,6 @@ async def book(db: Session = Depends(get_db)):
 async def create_book(request: schemas.BookCreate, db: Session = Depends(get_db)):
     return crud.create_book(db=db, request=request)
 
-@app.put("/book")
-async def update_book():
-    pass
+@app.put("/book/{category}", response_model=schemas.Book)
+async def update_book(category: str, request: schemas.BookUpdate, db: Session = Depends(get_db)):
+    return crud.update_book(category,db, request=request)

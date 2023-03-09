@@ -14,9 +14,23 @@ def create_book(db: Session, request: schemas.BookCreate):
         book_id=str(uuid.uuid4()),
         title=request.title,
         description=request.description,
-        amount=Decimal(request.amount)
+        category=request.category,
+        amount=Decimal(request.amount),
+        pages=request.pages,
+        author=request.author
     )
     db.add(new_book)
     db.commit()
     db.refresh(new_book)
     return new_book
+
+def update_book(category: str, db: Session, request: schemas.BookUpdate):
+    book = db.query(models.Book).filter(models.Book.category == category).first()
+
+    book.description=request.description
+    book.amount=Decimal(request.amount)
+    book.pages=request.pages
+
+    db.commit()
+    db.refresh(book)
+    return book
