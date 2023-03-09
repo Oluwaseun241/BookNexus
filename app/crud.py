@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 # SqlAlchemy Import
 from sqlalchemy.orm import Session
 import uuid
@@ -8,6 +9,9 @@ from . import models, schemas
 
 def get_book(db: Session):
     return db.query(models.Book).all()
+
+def get_book_category(category: str, db: Session):
+    return db.query(models.Book).filter(models.Book.category == category).first()
 
 def create_book(db: Session, request: schemas.BookCreate):
     new_book = models.Book(
@@ -26,6 +30,9 @@ def create_book(db: Session, request: schemas.BookCreate):
 
 def update_book(category: str, db: Session, request: schemas.BookUpdate):
     book = db.query(models.Book).filter(models.Book.category == category).first()
+    
+    if not book:
+        raise HTTPException(status_code=404, detail="Category not found")
 
     book.description=request.description
     book.amount=Decimal(request.amount)
