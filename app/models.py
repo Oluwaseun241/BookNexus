@@ -15,4 +15,7 @@ class Book(Base):
     book_id = Column(String(36), primary_key=True, index=True, default=str(uuid.uuid4()))
     title = Column(String)
     description = Column(String)
+    category = Column(String)
     amount = Column(Numeric(4,2))
+    pages = Column(Integer)
+    author = Column(String)

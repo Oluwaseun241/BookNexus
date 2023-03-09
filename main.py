@@ -20,11 +20,15 @@ def get_db():
         db.close()
 
 
-@app.get("/", response_model=List[schemas.Book])
+@app.get("/book", response_model=List[schemas.Book])
 async def book(db: Session = Depends(get_db)):
     books = crud.get_book(db)
     return books
 
-@app.post("/", response_model=schemas.Book)
+@app.post("/book", response_model=schemas.Book)
 async def create_book(request: schemas.BookCreate, db: Session = Depends(get_db)):
     return crud.create_book(db=db, request=request)
+
+@app.put("/book")
+async def update_book():
+    pass

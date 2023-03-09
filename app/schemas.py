@@ -9,7 +9,10 @@ class Book(BaseModel):
     book_id: Optional[str] = None
     title: str
     description: str
+    category: str
     amount: Decimal
+    pages: int
+    author: str
 
     class Config:
         orm_mode = True
