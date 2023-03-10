@@ -1,7 +1,9 @@
 # FastAPU Import
 from fastapi import HTTPException, status
+from typing import List
 # SqlAlchemy Import
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 import uuid
 from decimal import Decimal
 
@@ -11,8 +13,9 @@ from . import models, schemas
 def get_book(db: Session):
     return db.query(models.Book).all()
 
-def get_book_category(categories: str, db: Session):
-    return db.query(models.Book).filter(models.Book.categories == categories).first()
+def get_book_category(categories: List[str], db: Session):
+    return db.query(models.Book).filter(or_(*[models.Book.categories.contains(categories) for category in categories])).all()
+    #return db.query(models.Book).filter(models.Book.categories == categories).all()
 
 def create_book(db: Session, request: schemas.BookCreate):
     new_book = models.Book(

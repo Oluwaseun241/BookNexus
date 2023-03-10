@@ -25,9 +25,9 @@ async def book(db: Session = Depends(get_db)):
     books = crud.get_book(db)
     return books
 
-@app.get("/book/{category}", response_model=schemas.Book, status_code=status.HTTP_302_FOUND)
-async def book(category: str, db: Session = Depends(get_db)):
-    book = crud.get_book_category(category, db)
+@app.get("/book/{category}", response_model=List[schemas.Book], status_code=status.HTTP_302_FOUND)
+async def book(categories: str, db: Session = Depends(get_db)):
+    book = crud.get_book_category(categories, db)
     if not book:
         raise HTTPException(status_code=404, detail="Category not found")
     return book
