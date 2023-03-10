@@ -11,17 +11,18 @@ def get_book(db: Session):
     return db.query(models.Book).all()
 
 def get_book_category(category: str, db: Session):
-    return db.query(models.Book).filter(models.Book.category == category).first()
+    return db.query(models.Book).filter(models.Book.categories == categories).first()
 
 def create_book(db: Session, request: schemas.BookCreate):
     new_book = models.Book(
         book_id=str(uuid.uuid4()),
+        isbn=request.isbn,
         title=request.title,
         description=request.description,
-        category=request.category,
+        categories=request.categories,
         amount=Decimal(request.amount),
         pages=request.pages,
-        author=request.author
+        authors=request.authors
     )
     db.add(new_book)
     db.commit()
@@ -42,8 +43,8 @@ def update_book(category: str, db: Session, request: schemas.BookUpdate):
     db.refresh(book)
     return book
 
-def delete_book(ISBN, db: Session):
-    book = db.query(models.Book).filter(models.Book.isbn == ISBN).delete(synchronize_session=False)
+def delete_book(isbn, db: Session):
+    book = db.query(models.Book).filter(models.Book.isbn == isbn).delete(synchronize_session=False)
     
     db.commit()
     return book

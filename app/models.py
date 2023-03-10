@@ -13,10 +13,10 @@ class Book(Base):
     __tablename__ = 'books'
 
     book_id = Column(String(36), primary_key=True, index=True, default=str(uuid.uuid4()))
-    isbn = Column(Integer)
-    title = Column(String)
-    description = Column(String)
-    category = Column(String)
-    amount = Column(Numeric(4,2))
-    pages = Column(Integer)
-    author = Column(String)
+    isbn = Column(Integer, nullable=False, unique=True)
+    title = Column(String(4), nullable=False, unique=True)
+    description = Column(String(250), nullable=True)
+    categories = Column(String, nullable=False)
+    amount = Column(Numeric(10,2), nullable=False)
+    pages = Column(Integer, nullable=False)
+    authors = Column(String(100), nullable=False)

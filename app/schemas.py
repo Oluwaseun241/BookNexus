@@ -1,5 +1,5 @@
 # Pydantic Imports
-from pydantic import BaseModel
+from pydantic import BaseModel, constr
 
 # Third party Imports
 from decimal import Decimal
@@ -7,13 +7,13 @@ from typing import Optional
 
 class Book(BaseModel):
     book_id: Optional[str] = None
-    ISBN: int
-    title: str
+    isbn: int 
+    title: constr(max_length=4)
     description: str
-    category: str
+    categories: str
     amount: Decimal
     pages: int
-    author: str
+    authors: str
 
     class Config:
         orm_mode = True
@@ -21,13 +21,13 @@ class Book(BaseModel):
     
 
 class BookCreate(BaseModel):
-    ISBN: int
+    isbn: int
     title: str
     description: str
-    category: str
+    categories: str
     amount: Decimal
     pages: int
-    author: str
+    authors: str
 
 class BookUpdate(BaseModel):
     description: str
