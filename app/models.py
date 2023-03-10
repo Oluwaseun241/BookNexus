@@ -20,3 +20,13 @@ class Book(Base):
     amount = Column(Numeric(10,2), nullable=False)
     pages = Column(Integer, nullable=False)
     authors = Column(String, nullable=False)
+
+class User(Base):
+
+    __tablename__ = 'users'
+
+    user_id = Column(String(36), primary_key=True, index=True, default=str(uuid.uuid4()))
+    username = Column(String, unique=True, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
+    is_staff = Column(String, default=False, nullable=False)

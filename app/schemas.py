@@ -5,8 +5,7 @@ from pydantic import BaseModel
 from decimal import Decimal
 from typing import Optional
 
-class Book(BaseModel):
-    book_id: Optional[str] = None
+class BookBase(BaseModel):
     isbn: int 
     title: str
     description: str
@@ -15,20 +14,32 @@ class Book(BaseModel):
     pages: int
     authors: str
 
+
+class Book(BookBase):
+    book_id: Optional[str] = None
     class Config:
         orm_mode = True
 
     
 
-class BookCreate(BaseModel):
-    isbn: int
-    title: str
-    description: str
-    categories: str
-    amount: Decimal
-    pages: int
-    authors: str
+class BookCreate(BookBase):
+    pass
 
 class BookUpdate(BaseModel):
     description: str
     amount: Decimal
+
+class UserBase(BaseModel):
+    username: str
+    email: str
+    password: str
+    is_staff: bool
+
+class User(UserBase):
+    user_id: Optional[str] = None
+    class Config:
+        orm_mode = True
+
+
+class ShowUser(UserBase):
+    pass

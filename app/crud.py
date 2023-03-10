@@ -49,3 +49,23 @@ def delete_book(isbn, db: Session):
     book = db.query(models.Book).filter(models.Book.isbn == isbn).delete(synchronize_session=False)
     db.commit()
     return book
+
+def create_user(db: Session, request: schemas.User):
+    new_user = models.User(
+        user_id=str(uuid.uuid4()),
+        username=request.username,
+        email=request.email,
+        password=request.password,
+        is_staff=request.is_staff
+    )
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+def get_user():
+    pass
+
+def delete_user():
+    pass

@@ -47,3 +47,7 @@ async def delete_book(isbn: str, db: Session = Depends(get_db)):
     if not book:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
     return {"detail": f"Book with isbn{isbn} is sucessful deleted"}
+
+@app.post("/user", response_model=schemas.ShowUser)
+async def create_user(request: schemas.User, db: Session = Depends(get_db)):
+    return crud.create_user(db=db, request=request)
