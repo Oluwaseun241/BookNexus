@@ -10,7 +10,7 @@ from . import models, schemas
 def get_book(db: Session):
     return db.query(models.Book).all()
 
-def get_book_category(category: str, db: Session):
+def get_book_category(categories: str, db: Session):
     return db.query(models.Book).filter(models.Book.categories == categories).first()
 
 def create_book(db: Session, request: schemas.BookCreate):
@@ -29,15 +29,14 @@ def create_book(db: Session, request: schemas.BookCreate):
     db.refresh(new_book)
     return new_book
 
-def update_book(category: str, db: Session, request: schemas.BookUpdate):
-    book = db.query(models.Book).filter(models.Book.category == category).first()
+def update_book(title: str, db: Session, request: schemas.BookUpdate):
+    book = db.query(models.Book).filter(models.Book.title == title).first()
     
     if not book:
-        raise HTTPException(status_code=404, detail="Category not found")
+        raise HTTPException(status_code=404, detail="Title incorrect")
 
     book.description=request.description
     book.amount=Decimal(request.amount)
-    book.pages=request.pages
 
     db.commit()
     db.refresh(book)
