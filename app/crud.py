@@ -1,4 +1,5 @@
-from fastapi import HTTPException
+# FastAPU Import
+from fastapi import HTTPException, status
 # SqlAlchemy Import
 from sqlalchemy.orm import Session
 import uuid
@@ -33,17 +34,15 @@ def update_book(title: str, db: Session, request: schemas.BookUpdate):
     book = db.query(models.Book).filter(models.Book.title == title).first()
     
     if not book:
-        raise HTTPException(status_code=404, detail="Title incorrect")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Title incorrect")
 
     book.description=request.description
     book.amount=Decimal(request.amount)
-
     db.commit()
     db.refresh(book)
     return book
 
 def delete_book(isbn, db: Session):
     book = db.query(models.Book).filter(models.Book.isbn == isbn).delete(synchronize_session=False)
-    
     db.commit()
     return book
