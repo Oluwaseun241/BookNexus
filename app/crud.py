@@ -69,5 +69,7 @@ def create_user(db: Session, request: schemas.User):
 def get_user(db: Session):
     return db.query(models.User).all()
 
-def delete_user():
-    pass
+def delete_user(username: str, db: Session):
+    user = db.query(models.User).filter(models.User.username == username).delete(synchronize_session=False)
+    db.commit()
+    return user

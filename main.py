@@ -47,7 +47,7 @@ async def delete_book(isbn: str, db: Session = Depends(get_db)):
     book = crud.delete_book(isbn, db)
     if not book:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
-    return {"detail": f"Book with isbn {isbn} is sucessful deleted"}
+    return {"detail": f"Book with isbn {isbn} is sucessfully deleted"}
 
 @app.post("/user", response_model=schemas.ShowUser, status_code=status.HTTP_201_CREATED)
 async def create_user(request: schemas.User, db: Session = Depends(get_db)):
@@ -58,3 +58,9 @@ async def user(db: Session = Depends(get_db)):
     users = crud.get_user(db)
     return users
 
+@app.delete("/user/{username}", status_code=status.HTTP_202_ACCEPTED)
+async def delete_user(username: str, db: Session = Depends(get_db)):
+    user = crud.delete_user(username, db)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    return {"detail": f"User with username {username} is sucessfully deleted"}
