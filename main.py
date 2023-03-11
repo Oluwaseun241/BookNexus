@@ -57,3 +57,4 @@ async def create_user(request: schemas.User, db: Session = Depends(get_db)):
 async def user(db: Session = Depends(get_db)):
     users = crud.get_user(db)
     return users
+

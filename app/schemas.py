@@ -43,3 +43,6 @@ class ShowUser(BaseModel):
     username: str
     email: str
     is_staff: bool
+    
+    class Config:
+        orm_mode = True
