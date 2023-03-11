@@ -7,6 +7,7 @@ from typing import List
 from app import crud, models, schemas
 from app.database import SessionLocal, engine
 
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -25,7 +26,7 @@ async def book(db: Session = Depends(get_db)):
     books = crud.get_book(db)
     return books
 
-@app.get("/book/{category}", response_model=List[schemas.Book], status_code=status.HTTP_302_FOUND)
+@app.get("/book/{category}", response_model=List[schemas.Book], status_code=status.HTTP_202_ACCEPTED)
 async def book(categories: str, db: Session = Depends(get_db)):
     book = crud.get_book_category(categories, db)
     if not book:
@@ -46,8 +47,13 @@ async def delete_book(isbn: str, db: Session = Depends(get_db)):
     book = crud.delete_book(isbn, db)
     if not book:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
-    return {"detail": f"Book with isbn{isbn} is sucessful deleted"}
+    return {"detail": f"Book with isbn {isbn} is sucessful deleted"}
 
-@app.post("/user", response_model=schemas.ShowUser)
+@app.post("/user", response_model=schemas.ShowUser, status_code=status.HTTP_201_CREATED)
 async def create_user(request: schemas.User, db: Session = Depends(get_db)):
     return crud.create_user(db=db, request=request)
+
+@app.get("/user", response_model=List[schemas.ShowUser], status_code=status.HTTP_200_OK)
+async def user(db: Session = Depends(get_db)):
+    users = crud.get_user(db)
+    return users

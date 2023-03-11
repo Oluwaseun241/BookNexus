@@ -9,6 +9,7 @@ from decimal import Decimal
 
 # Own Import
 from . import models, schemas
+from app.core.hash import Hash
 
 def get_book(db: Session):
     return db.query(models.Book).all()
@@ -51,11 +52,12 @@ def delete_book(isbn, db: Session):
     return book
 
 def create_user(db: Session, request: schemas.User):
+    hashed_password = Hash.get_password_hash(request.password)
     new_user = models.User(
         user_id=str(uuid.uuid4()),
         username=request.username,
         email=request.email,
-        password=request.password,
+        password=hashed_password,
         is_staff=request.is_staff
     )
 
@@ -64,8 +66,8 @@ def create_user(db: Session, request: schemas.User):
     db.refresh(new_user)
     return new_user
 
-def get_user():
-    pass
+def get_user(db: Session):
+    return db.query(models.User).all()
 
 def delete_user():
     pass

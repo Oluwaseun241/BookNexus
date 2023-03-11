@@ -36,10 +36,10 @@ class UserBase(BaseModel):
     is_staff: bool
 
 class User(UserBase):
-    user_id: Optional[str] = None
-    class Config:
-        orm_mode = True
-
-
-class ShowUser(UserBase):
     pass
+
+class ShowUser(BaseModel):
+    user_id: Optional[str] = None
+    username: str
+    email: str
+    is_staff: bool
