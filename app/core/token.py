@@ -1,7 +1,9 @@
+# Other Imports
 from datetime import datetime, timedelta
 from .. import schemas
 from typing import Union
 
+# JWT Imports
 from jose import JWTError, jwt
 from secret_key_generator import secret_key_generator
 

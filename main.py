@@ -5,7 +5,7 @@ from typing import List
 from fastapi.security import OAuth2PasswordRequestForm
 
 # Own Imports
-from app import crud, models, schemas
+from app import crud, models, schemas, Oauth2
 from app.database import SessionLocal, engine
 from app.core import token
 from app.core.hash import Hash
@@ -45,7 +45,7 @@ def update_book(title: str, request: schemas.BookUpdate, db: Session = Depends(g
     return book
 
 @app.delete("/book/{isbn}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_book(isbn: str, db: Session = Depends(get_db)):
+def delete_book(isbn: str, db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
     book = crud.delete_book(isbn, db)
     if not book:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
@@ -56,23 +56,14 @@ def create_user(request: schemas.User, db: Session = Depends(get_db)):
     return crud.create_user(db=db, request=request)
 
 @app.get("/user", response_model=List[schemas.ShowUser], status_code=status.HTTP_200_OK)
-def user(db: Session = Depends(get_db)):
+def user(db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
     users = crud.get_user(db)
     return users
 
 @app.delete("/user/{username}", status_code=status.HTTP_202_ACCEPTED)
-def delete_user(username: str, db: Session = Depends(get_db)):
+def delete_user(username: str, db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
     user = crud.delete_user(username, db)
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return {"detail": f"User with username {username} is sucessfully deleted"}
 
-@app.post("/login")
-def login(request:OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.username == request.username).first()
-    if not user:
-        return False
-    if not Hash.verify_password(request.password, user.password):
-        return False
-    access_token = token.create_access_token(data={"sub": user.username})
-    return {"access_token": access_token, "token_type": "bearer"}
