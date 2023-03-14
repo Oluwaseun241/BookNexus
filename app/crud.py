@@ -84,3 +84,6 @@ def delete_user(username: str, db: Session):
     user = db.query(models.User).filter(models.User.username == username).delete(synchronize_session=False)
     db.commit()
     return user
+
+def get_permit(db: Session, request: bool):
+    user = db.query(models.User).filter(models.User.is_staff == 'false')

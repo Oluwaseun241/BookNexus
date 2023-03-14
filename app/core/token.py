@@ -6,10 +6,12 @@ from secret_key_generator import secret_key_generator
 from datetime import datetime, timedelta
 from .. import schemas
 from typing import Union
+from decouple import config
 
 SECRET_KEY = secret_key_generator.generate()
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ALGORITHM: str = config('JWT_ALGORITHM')
+ACCESS_TOKEN_EXPIRE_MINUTES: int = config('TOKEN_LIFETIME')
+
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
     to_encode = data.copy()

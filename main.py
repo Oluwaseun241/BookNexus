@@ -1,8 +1,8 @@
 # FastAPI Imports
-from fastapi import FastAPI
+from fastapi import FastAPI, Security
 
 # Own Imports
-from app import models
+from app import models, Oauth2
 from app.database import engine
 from routers import books, users, auth
 

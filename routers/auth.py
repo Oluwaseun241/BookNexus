@@ -7,6 +7,9 @@ from sqlalchemy.orm import Session
 
 # Own imports
 from app.database import get_db
+from app import models
+from app.core.hash import Hash
+from app.core import token
 
 
 router = APIRouter(

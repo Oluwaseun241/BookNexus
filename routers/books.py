@@ -6,7 +6,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 # Own imports
-from app import crud, models, schemas, Oauth2
+from app import crud, models, schemas, Oauth2, permission
 from app.database import get_db
 
 router = APIRouter(
@@ -34,9 +34,16 @@ def update_book(title: str, request: schemas.BookUpdate, db: Session = Depends(g
     book = crud.update_book(title, db, request=request)
     return book
 
-@router.delete("/book/{isbn}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/book/{isbn}", status_code=status.HTTP_202_ACCEPTED)
 def delete_book(isbn: str, db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
     book = crud.delete_book(isbn, db)
     if not book:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
     return {"detail": f"Book with isbn {isbn} is sucessfully deleted"}
+
+@router.get("/user/demo")
+def demo(db: Session = Depends(get_db), request: bool = ["false"]):
+    user = crud.get_permit(db, request)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Permission not granted")
+    return {"details": "Permission granted"}
