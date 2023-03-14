@@ -1,12 +1,11 @@
-# Other Imports
-from datetime import datetime, timedelta
-from .. import schemas
-from typing import Union
-
 # JWT Imports
 from jose import JWTError, jwt
 from secret_key_generator import secret_key_generator
 
+# Other Imports
+from datetime import datetime, timedelta
+from .. import schemas
+from typing import Union
 
 SECRET_KEY = secret_key_generator.generate()
 ALGORITHM = "HS256"
