@@ -52,6 +52,15 @@ def delete_book(isbn, db: Session):
     return book
 
 def create_user(db: Session, request: schemas.User):
+    user_with_username = db.query(models.User).filter(
+        models.User.username == request.username).first()
+    user_with_email = db.query(models.User).filter(
+        models.User.email == request.email).first()
+
+    if user_with_username or user_with_email:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT,
+                            detail="Username or email already used")
+                            
     hashed_password = Hash.get_password_hash(request.password)
     new_user = models.User(
         user_id=str(uuid.uuid4()),
