@@ -84,4 +84,3 @@ def delete_user(username: str, db: Session):
     user = db.query(models.User).filter(models.User.username == username).delete(synchronize_session=False)
     db.commit()
     return user
-
