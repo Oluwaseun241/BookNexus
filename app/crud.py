@@ -1,6 +1,7 @@
 # FastAPU Import
 from fastapi import HTTPException, status
 from typing import List
+
 # SqlAlchemy Import
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
@@ -10,6 +11,7 @@ from decimal import Decimal
 # Own Import
 from . import models, schemas
 from app.core.hash import Hash
+
 
 def get_book(db: Session):
     return db.query(models.Book).all()
@@ -82,3 +84,4 @@ def delete_user(username: str, db: Session):
     user = db.query(models.User).filter(models.User.username == username).delete(synchronize_session=False)
     db.commit()
     return user
+

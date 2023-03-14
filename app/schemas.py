@@ -1,5 +1,5 @@
 # Pydantic Imports
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 # Third party Imports
 from decimal import Decimal
@@ -31,7 +31,7 @@ class BookUpdate(BaseModel):
 
 class UserBase(BaseModel):
     username: str
-    email: str
+    email: EmailStr
     password: str
     is_staff: bool
 
@@ -41,8 +41,19 @@ class User(UserBase):
 class ShowUser(BaseModel):
     user_id: Optional[str] = None
     username: str
-    email: str
+    email: EmailStr
     is_staff: bool
     
     class Config:
         orm_mode = True
+
+class AuthUser(BaseModel):
+    username: str
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    
+class TokenData(BaseModel):
+    username: str | None = None
