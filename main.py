@@ -9,6 +9,7 @@ from app import crud, models, schemas, Oauth2
 from app.database import SessionLocal, engine
 from app.core import token
 from app.core.hash import Hash
+from routers import notes, users, auth
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -67,3 +68,4 @@ def delete_user(username: str, db: Session = Depends(get_db), current_user: mode
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return {"detail": f"User with username {username} is sucessfully deleted"}
 
+app.include_router(auth.router)
