@@ -47,9 +47,6 @@ class ShowUser(BaseModel):
     class Config:
         orm_mode = True
 
-class AuthUser(BaseModel):
-    username: str
-    password: str
 
 class Token(BaseModel):
     access_token: str
@@ -57,4 +54,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
-    
+
+class CartItem(BaseModel):
+    book_id: str
+    quantity: int
