@@ -1,5 +1,5 @@
 # SqlAlchemy Imports
-from sqlalchemy import Column, Numeric, Integer, String
+from sqlalchemy import Column, Numeric, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 # UUID Import
@@ -30,3 +30,9 @@ class User(Base):
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
     is_staff = Column(String, default=False, nullable=False)
+
+# class Cart(Base):
+
+#     __tablename__ = 'carts'
+
+#     book_id = Column(String(36), ForeignKey("book_id"))

@@ -16,6 +16,7 @@ from app.core.hash import Hash
 def get_book(db: Session):
     return db.query(models.Book).all()
 
+
 def get_book_category(categories: List[str], db: Session):
     return db.query(models.Book).filter(or_(*[models.Book.categories.contains(categories) for category in categories])).all()
     #return db.query(models.Book).filter(models.Book.categories == categories).all()
@@ -79,6 +80,9 @@ def create_user(db: Session, request: schemas.User):
 
 def get_user(db: Session):
     return db.query(models.User).all()
+
+def get_user_id(user_id: str,db: Session):
+    return db.query(models.User).filter(models.User.user_id == user_id).first()
 
 def delete_user(username: str, db: Session):
     user = db.query(models.User).filter(models.User.username == username).delete(synchronize_session=False)
