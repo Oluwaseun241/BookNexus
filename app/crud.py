@@ -85,5 +85,10 @@ def delete_user(username: str, db: Session):
     db.commit()
     return user
 
-def get_permit(db: Session, request: bool):
-    user = db.query(models.User).filter(models.User.is_staff == 'false')
+def get_permit(db: Session, request: schemas.UserBase):
+    user = db.query(models.User).filter(models.User.is_staff == request).first()
+
+    if request:
+        return "Permission granted"
+    else:
+        return "Permission not granted"
