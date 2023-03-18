@@ -65,6 +65,7 @@ def create_user(db: Session, request: schemas.User):
                             detail="Username or email already used")
                             
     hashed_password = Hash.get_password_hash(request.password)
+
     new_user = models.User(
         user_id=str(uuid.uuid4()),
         username=request.username,
@@ -81,8 +82,8 @@ def create_user(db: Session, request: schemas.User):
 def get_user(db: Session):
     return db.query(models.User).all()
 
-def get_user_id(user_id: str,db: Session):
-    return db.query(models.User).filter(models.User.user_id == user_id).first()
+def cart_book(title: str,db: Session):
+    return db.query(models.User).filter(models.Book.title == title).first()
 
 def delete_user(username: str, db: Session):
     user = db.query(models.User).filter(models.User.username == username).delete(synchronize_session=False)
