@@ -2,7 +2,7 @@
 from pydantic import BaseModel, EmailStr
 
 # Third party Imports
-from decimal import Decimal
+# from decimal import Decimal
 from typing import Optional
 
 class BookBase(BaseModel):
@@ -10,7 +10,7 @@ class BookBase(BaseModel):
     title: str
     description: str
     categories: str
-    amount: Decimal
+    amount: float
     pages: int
     authors: str
 
@@ -27,7 +27,7 @@ class BookCreate(BookBase):
 
 class BookUpdate(BaseModel):
     description: str
-    amount: Decimal
+    amount: float
 
 class UserBase(BaseModel):
     username: str
@@ -58,3 +58,10 @@ class TokenData(BaseModel):
 class CartItem(BaseModel):
     book_id: str
     quantity: int
+
+
+# class PaymentInfo(BaseModel):
+#     card_number: str
+#     expiration_date: str
+#     cvv: str
+#     total_amount: float

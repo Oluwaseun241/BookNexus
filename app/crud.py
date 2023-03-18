@@ -82,8 +82,20 @@ def create_user(db: Session, request: schemas.User):
 def get_user(db: Session):
     return db.query(models.User).all()
 
-def cart_book(title: str,db: Session):
-    return db.query(models.User).filter(models.Book.title == title).first()
+def add_cart(request: schemas.CartItem, db: Session):
+    title = db.query(models.Book).filter(models.Book.book_id == request.book_id).first()
+
+    if not book_id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    new_cart = models.Cart(
+        book_id = request.book_id,
+        quantity = request.quantity
+    )
+    db.add(new_cart)
+    db.commit()
+    db.refresh(new_cart)
+    return new_cart
+    
 
 def delete_user(username: str, db: Session):
     user = db.query(models.User).filter(models.User.username == username).delete(synchronize_session=False)

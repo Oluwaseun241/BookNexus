@@ -31,8 +31,9 @@ class User(Base):
     password = Column(String, nullable=False)
     is_staff = Column(String, default=False, nullable=False)
 
-# class Cart(Base):
+class Cart(Base):
 
-#     __tablename__ = 'carts'
+    __tablename__ = 'carts'
 
-#     book_id = Column(String(36), ForeignKey("book_id"))
+    book_id = Column(String(36), ForeignKey("books.book_id"))
+    quantity = Column(Integer, nullable=False)
