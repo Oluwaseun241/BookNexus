@@ -23,7 +23,7 @@ def get_book_category(categories: List[str], db: Session):
 
 def create_book(db: Session, request: schemas.BookCreate):
     new_book = models.Book(
-        book_id=str(uuid.uuid4()),
+        id=str(uuid.uuid4()),
         isbn=request.isbn,
         title=request.title,
         description=request.description,
@@ -67,7 +67,7 @@ def create_user(db: Session, request: schemas.User):
     hashed_password = Hash.get_password_hash(request.password)
 
     new_user = models.User(
-        user_id=str(uuid.uuid4()),
+        id=str(uuid.uuid4()),
         username=request.username,
         email=request.email,
         password=hashed_password,
@@ -82,14 +82,14 @@ def create_user(db: Session, request: schemas.User):
 def get_user(db: Session):
     return db.query(models.User).all()
 
-def add_cart(request: schemas.CartItem, db: Session):
-    title = db.query(models.Book).filter(models.Book.book_id == request.book_id).first()
+def add_cart(book_id: str, request: schemas.CartItem, db: Session):
+    cart = db.query(models.Book).filter(models.Book.id == book_id).first()
 
-    if not book_id:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    if not cart:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+        detail="Book_id not found")
     new_cart = models.Cart(
-        book_id = request.book_id,
-        quantity = request.quantity
+        quantity=request.quantity
     )
     db.add(new_cart)
     db.commit()

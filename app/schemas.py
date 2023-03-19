@@ -16,7 +16,7 @@ class BookBase(BaseModel):
 
 
 class Book(BookBase):
-    book_id: Optional[str] = None
+    id: Optional[str] = None
     class Config:
         orm_mode = True
 
@@ -39,7 +39,7 @@ class User(UserBase):
     pass
 
 class ShowUser(BaseModel):
-    user_id: Optional[str] = None
+    id: Optional[str] = None
     username: str
     email: EmailStr
     is_staff: bool
@@ -56,7 +56,7 @@ class TokenData(BaseModel):
     username: str | None = None
 
 class CartItem(BaseModel):
-    book_id: str
+    # id: str
     quantity: int
 
 

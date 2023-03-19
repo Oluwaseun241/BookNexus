@@ -7,5 +7,5 @@ from app.database import get_db
 router = APIRouter()
 
 @router.post("/cart")
-def add_to_cart(request: schemas.CartItem, db: Session = Depends(get_db)):
-    return crud.add_cart(request=request, db=db)
+def add_to_cart(book_id: str, request: schemas.CartItem, db: Session = Depends(get_db)):
+    return crud.add_cart(book_id,request=request, db=db)
