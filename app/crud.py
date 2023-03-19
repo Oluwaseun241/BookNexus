@@ -89,6 +89,7 @@ def add_cart(book_id: str, request: schemas.CartItem, db: Session):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
         detail="Book_id not found")
     new_cart = models.Cart(
+        book_id=request.book_id,
         quantity=request.quantity
     )
     db.add(new_cart)

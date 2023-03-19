@@ -56,7 +56,7 @@ class TokenData(BaseModel):
     username: str | None = None
 
 class CartItem(BaseModel):
-    # id: str
+    book_id: str
     quantity: int
 
 

@@ -37,6 +37,6 @@ class Cart(Base):
 
     __tablename__ = 'carts'
 
-    id = Column(Integer, primary_key=True, index=True, default=1)
+    id = Column(Integer, primary_key=True, index=True)
     quantity = Column(Integer, nullable=False)
-    # book_id = Column(Integer, ForeignKey("book.id"))
+    book_id = Column(String, ForeignKey("books.id"))
