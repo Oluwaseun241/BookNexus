@@ -11,14 +11,14 @@ router = APIRouter(
     tags=["Users"]
 )
 
-@router.post("/user", response_model=schemas.ShowUser, status_code=status.HTTP_201_CREATED)
-def create_user(request: schemas.User, db: Session = Depends(get_db)):
-    return crud.create_user(db=db, request=request)
-
 @router.get("/user", response_model=List[schemas.ShowUser], status_code=status.HTTP_200_OK)
 def user(db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
     users = crud.get_user(db)
     return users
+
+@router.post("/user", response_model=schemas.ShowUser, status_code=status.HTTP_201_CREATED)
+def create_user(request: schemas.User, db: Session = Depends(get_db)):
+    return crud.create_user(db=db, request=request)
 
 @router.delete("/user/{username}", status_code=status.HTTP_202_ACCEPTED)
 def delete_user(username: str, db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
