@@ -3,7 +3,7 @@ from pydantic import BaseModel, EmailStr
 
 # Third party Imports
 # from decimal import Decimal
-from typing import Optional
+from typing import Optional, List
 
 class BookBase(BaseModel):
     isbn: int 
@@ -59,9 +59,12 @@ class CartItem(BaseModel):
     book_id: str
     quantity: int
 
+class Cart(BaseModel):
+    user_id: int
+    items: List[CartItem] = []
 
-# class PaymentInfo(BaseModel):
-#     card_number: str
-#     expiration_date: str
-#     cvv: str
-#     total_amount: float
+class Order(BaseModel):
+    cart: Cart
+    payment_card_number: str
+    payment_expiration_date: str
+    payment_cvv: str

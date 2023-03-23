@@ -40,3 +40,4 @@ class Cart(Base):
     id = Column(Integer, primary_key=True, index=True)
     quantity = Column(Integer, nullable=False)
     book_id = Column(String, ForeignKey("books.id"))
+    user_id = Column(String, ForeignKey("users.id"))
