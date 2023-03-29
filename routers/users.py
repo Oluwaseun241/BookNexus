@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 @router.get("/user", response_model=List[schemas.ShowUser], status_code=status.HTTP_200_OK)
-def user(db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
+def user(db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
     users = crud.get_user(db)
     return users
 
@@ -21,7 +21,7 @@ def create_user(request: schemas.User, db: Session = Depends(get_db)):
     return crud.create_user(db=db, request=request)
 
 @router.delete("/user/{username}", status_code=status.HTTP_202_ACCEPTED)
-def delete_user(username: str, db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
+def delete_user(username: str, db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
     user = crud.delete_user(username, db)
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")

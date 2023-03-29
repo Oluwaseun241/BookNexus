@@ -34,7 +34,7 @@ async def checkout(cart: schemas.Cart, payment_info: schemas.Order):
     total = 0
     for item in cart.items:
         book = await crud.get_book_id(item.book_id)
-        total += schemas.book.amount * item.quantity
+        total += book.amount * item.quantity
 
     # check if the total amount matches the payment information
     if total != float(payment_info.cart.total):

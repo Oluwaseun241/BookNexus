@@ -29,18 +29,18 @@ def book(categories: str, db: Session = Depends(get_db)):
 
 
 @router.post("/book", response_model=schemas.Book, status_code=status.HTTP_201_CREATED)
-def create_book(request: schemas.BookCreate, db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
+def create_book(request: schemas.BookCreate, db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
     return crud.create_book(db=db, request=request)
 
 
 @router.put("/book/{title}", response_model=schemas.Book, status_code=status.HTTP_202_ACCEPTED)
-def update_book(title: str, request: schemas.BookUpdate, db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
+def update_book(title: str, request: schemas.BookUpdate, db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
     book = crud.update_book(title, db, request=request)
     return book
 
 
 @router.delete("/book/{isbn}", status_code=status.HTTP_202_ACCEPTED)
-def delete_book(isbn: str, db: Session = Depends(get_db), current_user: models.User = Depends(Oauth2.get_current_user)):
+def delete_book(isbn: str, db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
     book = crud.delete_book(isbn, db)
     if not book:
         raise HTTPException(
