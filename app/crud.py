@@ -21,8 +21,10 @@ def get_book_category(categories: List[str], db: Session):
     return db.query(models.Book).filter(or_(*[models.Book.categories.contains(categories) for category in categories])).all()
     # return db.query(models.Book).filter(models.Book.categories == categories).all()
 
+
 def get_book_id(id: str, db: Session) -> schemas.Book:
     return db.query(models.Book).filter(models.Book.id == id).first()
+
 
 def create_book(db: Session, request: schemas.BookCreate):
     new_book = models.Book(
@@ -126,5 +128,12 @@ def delete_cart(id: int, db: Session):
 def get_cart(db: Session):
     return db.query(models.Cart).all()
 
+
 def create_order(request: schemas.Order, db: Session):
-    pass
+    new_order = models.Order(cart=request.cart_id, payment_card_number=request.payment_card_number,
+                             payment_expiration_date=request.payment_expiration_date, payment_cvv=request.payment_cvv)
+    db.add(new_order)
+    db.commit()
+    db.refresh(new_order)
+    return new_order
+

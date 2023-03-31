@@ -21,6 +21,14 @@ async def get_current_user(data: str = Depends(oauth2_scheme)):
         headers={"WWW-Authenticate": "Bearer"},
     )
     return token.verify_token(data, credentials_exception)
+    
+
+async def is_staff(current_user: models.User = Depends(get_current_user)):
+    if not current_user.is_staff:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
+    elif current_user is None:
+        return None
+    return current_user
 
 # fake_users_db = {
 #     "johndoe": {
@@ -56,10 +64,4 @@ async def get_current_user(data: str = Depends(oauth2_scheme)):
 #         raise credentials_exception
 #     return user
 
-async def is_staff(current_user: models.User = Depends(get_current_user)):
-    if not current_user.is_staff:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
-    elif current_user is None:
-        return None
-    return current_user
 

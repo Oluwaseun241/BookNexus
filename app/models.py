@@ -41,3 +41,14 @@ class Cart(Base):
     quantity = Column(Integer, nullable=False)
     book_id = Column(String, ForeignKey("books.id"), nullable=False)
     user_id = Column(String, ForeignKey("users.id"))
+
+class Order(Base):
+
+    __tablename__ = 'orders'
+
+    id = Column(Integer, primary_key=True, index=True)
+    cart_id = Column(Integer, ForeignKey("carts.id"), nullable=False)
+    cart = relationship("Cart")
+    payment_card_number = Column(Integer, nullable=False)
+    payment_expiration_date = Column(Integer, nullable=False)
+    payment_cvv = Column(String, nullable=False)

@@ -64,7 +64,7 @@ class Cart(BaseModel):
     items: List[CartItem] = []
 
 class Order(BaseModel):
-    cart: Cart
+    cart_id: int
     payment_card_number: str
     payment_expiration_date: str
     payment_cvv: str
