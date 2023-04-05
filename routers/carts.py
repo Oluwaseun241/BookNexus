@@ -29,5 +29,5 @@ def delete_cart(id: int, db: Session = Depends(get_db), current_user: schemas.Us
     return {"detail": f"Cart with id {id} is sucessfully deleted"}
 
 @router.post("/cart/checkout")
-def cart_checkout(request: schemas.Order,db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
+def cart_checkout(request: schemas.Order, db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
     return crud.create_order(request, db)

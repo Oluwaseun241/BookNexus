@@ -130,12 +130,17 @@ def get_cart(db: Session):
 
 
 def create_order(request: schemas.Order, db: Session):
-    cart_id = db.query(models.Cart).filter(models.Cart.id == request.cart_id)
+    # Retrieve the cart instance with the given cart_id
+    cart = db.query(models.Cart).filter(models.Cart.id == request.cart_id).first()
 
-    if not cart_id:
+    # If the cart doesn't exist, raise a 404 error
+    if not cart:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cart ID is invalid")
-    new_order = models.Order(cart=request.cart_id, payment_card_number=request.payment_card_number,
+
+    # Create a new order instance and assign the cart instance to it
+    new_order = models.Order(cart=cart, payment_card_number=request.payment_card_number,
                              payment_expiration_date=request.payment_expiration_date, payment_cvv=request.payment_cvv)
+
     db.add(new_order)
     db.commit()
     db.refresh(new_order)

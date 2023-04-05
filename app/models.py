@@ -47,8 +47,7 @@ class Order(Base):
     __tablename__ = 'orders'
 
     id = Column(Integer, primary_key=True, index=True)
-    cart_id = Column(Integer, ForeignKey("carts.id"), nullable=False)
-    cart = relationship("Cart")
+    cart_id = Column(Integer, nullable=False)
     payment_card_number = Column(String, nullable=False)
     payment_expiration_date = Column(String, nullable=False)
     payment_cvv = Column(String, nullable=False)
