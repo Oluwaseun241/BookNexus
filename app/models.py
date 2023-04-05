@@ -49,6 +49,6 @@ class Order(Base):
     id = Column(Integer, primary_key=True, index=True)
     cart_id = Column(Integer, ForeignKey("carts.id"), nullable=False)
     cart = relationship("Cart")
-    payment_card_number = Column(Integer, nullable=False)
-    payment_expiration_date = Column(Integer, nullable=False)
+    payment_card_number = Column(String, nullable=False)
+    payment_expiration_date = Column(String, nullable=False)
     payment_cvv = Column(String, nullable=False)

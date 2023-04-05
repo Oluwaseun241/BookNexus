@@ -13,15 +13,15 @@ router = APIRouter(
 )
 
 @router.get("/cart")
-def get_cart(db: Session = Depends(get_db)):
+def get_cart(db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
     return crud.get_cart(db)
 
 @router.post("/cart")
-def add_to_cart(request: schemas.CartItem, db: Session = Depends(get_db)):
+def add_to_cart(request: schemas.CartItem, db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
     return crud.add_cart(request, db)
 
 @router.delete("/cart/{id}", status_code=status.HTTP_202_ACCEPTED)
-def delete_cart(id: int, db: Session = Depends(get_db)):
+def delete_cart(id: int, db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
     cart = crud.delete_cart(id, db)
 
     if not cart:
@@ -29,34 +29,5 @@ def delete_cart(id: int, db: Session = Depends(get_db)):
     return {"detail": f"Cart with id {id} is sucessfully deleted"}
 
 @router.post("/cart/checkout")
-def checkout(request: schemas.Order, cart: schemas.Cart, db: Session = Depends(get_db)):
-    # Create a new order record in the database
-    new_order = crud.create_order(request=request, db=db)
-
-    # Update the stock quantities for each book in the cart
-    for item in cart.items:
-        book = crud.get_book(db, book_id=item.book_id)
-        book.stock -= item.quantity
-        db.add(book)
-
-    db.commit()
-    db.refresh(new_order)
-
-    # Return the new order object
-    return new_order
-
-# @router.post("/cart/checkout")
-# async def checkout(cart: schemas.Cart, payment_info: schemas.Order):
-#     # calculate the total amount of the order
-#     total = 0
-#     for item in cart.items:
-#         book = await crud.get_book_id(item.book_id)
-#         total += book.amount * item.quantity
-
-#     # check if the total amount matches the payment information
-#     if total != float(payment_info.cart.total):
-#         return {"message": "Payment information does not match the total amount of the order."}
-
-#     # create the order and return a success message
-#     await crud.create_order(payment_info, total)
-#     return {"message": "Order successfully placed."}
+def cart_checkout(request: schemas.Order,db: Session = Depends(get_db), current_user: schemas.User = Depends(Oauth2.get_current_user)):
+    return crud.create_order(request, db)

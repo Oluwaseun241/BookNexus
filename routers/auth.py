@@ -28,3 +28,7 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
 
     access_token = token.create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
+
+# @router.get("/protected_route")
+# async def protected_route(current_user: models.User = Depends(Oauth2.is_staff)):
+#     return {"message": "You are authorized to access this route."}

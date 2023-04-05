@@ -46,7 +46,3 @@ def delete_book(isbn: str, db: Session = Depends(get_db), current_user: schemas.
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
     return {"detail": f"Book with isbn {isbn} is sucessfully deleted"}
-
-# @router.get("/protected_route")
-# async def protected_route(current_user: models.User = Depends(Oauth2.is_staff)):
-#     return {"message": "You are authorized to access this route."}
