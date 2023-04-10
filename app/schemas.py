@@ -68,3 +68,7 @@ class Order(BaseModel):
     payment_card_number: str
     payment_expiration_date: str
     payment_cvv: str
+
+class Checkout(BaseModel):
+    cart_id: int
+    total: int
