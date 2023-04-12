@@ -6,13 +6,13 @@ from sqlalchemy.orm import sessionmaker
 # Own Imports
 from app.core.config import settings
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+# SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+# engine = create_engine(
+#     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+# )
 
-# engine = create_engine(settings.DATABASE_URI, pool_pre_ping=True)
+engine = create_engine(settings.DATABASE_URI, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
