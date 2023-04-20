@@ -132,10 +132,6 @@ def get_cart(db: Session):
 def create_order(request: schemas.Order, db: Session):
     # Retrieve the cart instance with the given cart_id
     cart_id = db.query(models.Cart).filter(models.Cart.id == request.cart_id).first()
-    
-    # book = db.query(models.Book).filter(models.Book.id == item.id).first()
-    # total = book.price * item.quantity
-    # print(total)
 
     # If the cart doesn't exist, raise a 404 error
     if not cart_id:
